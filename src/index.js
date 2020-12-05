@@ -16,22 +16,8 @@ import $ from "jquery"
 
 import './index.css';
 
-/*
-
-import head from './head.png';
-import mcb from './mcb.png';
-import pic1 from './gallery/1.jpg';
-import pic2 from './gallery/2.jpg';
-import pic3 from './gallery/3.jpg';
-import pic4 from './gallery/4.jpg';
-import pic5 from './gallery/5.jpg';
-import pic6 from './gallery/6.jpg';
-import pic7 from './gallery/7.jpg';
-import left from './gallery/leftSide.jpg';
-import right from './gallery/rightSide.jpg';
-
- */
-
+// Takes: left (boolean)
+// Returns: Side image for left and right sides
 function EdgeImage(props) {
     return (
         <div className="col-sm">
@@ -42,30 +28,35 @@ function EdgeImage(props) {
                 style={{
                     maxHeight: "100vh",
                     position: "fixed",
-                    //left: (props.left ? "0" : "auto"),
-                    //right: (props.left ? "auto" : "0"),
                 }} />
 
         </div> 
     );
 }
 
+// Takes: active (boolean), path (string)
+// Returns: Single Bootstrap carousel item
 function CarouselItem(props) {
     return (
         <div className={(props.active ? "carousel-item active" : "carousel-item")}>
+
             <img src={props.path}
                 alt=""
                 className="d-block w-100"
                 style={{
                     maxWidth: "100%",
                     maxHeight: "100%",
+                    // Center horizontally
                     marginLeft: "auto",
                     marginRight: "auto",
                 }} />
+
         </div>
     );
 }
 
+// Takes: initial (int), hasButtons (boolean)
+// Returns: Bootstrap carousel with every image in gallery named 1.png - 58.png
 class Carousel extends React.Component {
     constructor(props) {
         super(props);
@@ -83,6 +74,7 @@ class Carousel extends React.Component {
 
         let paths = [...Array(this.state.size).keys()];
 
+        // Construct each carousel item from array
         const slides = paths.map((path, index) => (
             <CarouselItem
                 key={index}
@@ -91,9 +83,14 @@ class Carousel extends React.Component {
             />
         ));
 
+        // Only use buttons on gallery carousel, where hasButtons is true
         if (this.state.hasButtons)
             return (
-                <div id="carousel" className="carousel slide" data-ride="carousel" data-interval={this.state.interval} data-pause="false"
+                <div id="carousel"
+                    className="carousel slide"
+                    data-ride="carousel"
+                    data-interval={this.state.interval}
+                    data-pause="false"
                     style={{
                         maxWidth: "100%",
                         maxHeight: "100%",
@@ -101,19 +98,28 @@ class Carousel extends React.Component {
                     <div id="carousel-inner" className="carousel-inner w-100" role="listbox">
                         {slides}
                     </div>
-                    <a class="carousel-control-prev" href="#carousel" role="button" data-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Previous</span>
+                    {// Back button
+                    }
+                    <a className="carousel-control-prev" href="#carousel" role="button" data-slide="prev">
+                        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span className="sr-only">Previous</span>
                     </a>
-                    <a class="carousel-control-next" href="#carousel" role="button" data-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Next</span>
+                    {// Forward button
+                    }
+                    <a className="carousel-control-next" href="#carousel" role="button" data-slide="next">
+                        <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span className="sr-only">Next</span>
                     </a>
                 </div>
             );
+        // Non-gallery carousel, no buttons, hasButtons is undefined
         else
             return (
-                <div id="carousel" className="carousel slide" data-ride="carousel" data-interval={this.state.interval} data-pause="false">
+                <div id="carousel"
+                    className="carousel slide"
+                    data-ride="carousel"
+                    data-interval={this.state.interval}
+                    data-pause="false">
                     <div className="carousel-inner" role="listbox">
                         {slides}
                     </div>
@@ -122,9 +128,11 @@ class Carousel extends React.Component {
     }
 }
 
+// Takes: update (function: updateTitle)
+// Returns: Header section with name, motto, contact info, and navigation
 function Header(props) {
     return (
-        <div ref={props.header}>
+        <div>
 
             <div className="row">
 
@@ -133,6 +141,7 @@ function Header(props) {
                     <div className="row no-gutters justify-content-start">
                         <h2>Mike McBride Masonry</h2>
                     </div>
+
                     <div className="row no-gutters justify-content-start">
                         <h4>"Not perfect, but damn close!"</h4>
                     </div>
@@ -144,6 +153,7 @@ function Header(props) {
                     <div className="row no-gutters justify-content-end text-right">
                         <h4>Serving Coachella Valley Since 1981!</h4>
                     </div>
+
                     <div className="row no-gutters justify-content-end">
                         <h4>(760) 835-3881</h4>
                     </div>
@@ -160,6 +170,7 @@ function Header(props) {
                         style={{
                             width: "100%",
                         }}
+                        // Update title on navigation change
                         onClick={() => props.update("Mike McBride Masonry")}>
                         Home
                     </Link>
@@ -171,6 +182,7 @@ function Header(props) {
                         style={{
                             width: "100%",
                         }}
+                        // Update title on navigation change
                         onClick={() => props.update("Mike McBride Masonry | Gallery")}>
                         Gallery
                     </Link>
@@ -182,6 +194,8 @@ function Header(props) {
     );
 }
 
+// Takes: path (string)
+// Returns: Image component with bounded width and height
 function Image(props) {
     return (
         <img src={props.path}
@@ -193,6 +207,8 @@ function Image(props) {
     );
 }
 
+// Takes: nothing
+// Returns: Row of images underneath carousels
 function ImageRow(props) {
     // mcb 285px -> 39.37vw each
     // head 154px -> 21.26vw
@@ -227,9 +243,13 @@ function ImageRow(props) {
     );
 }
 
+// Takes: nothing
+// Returns: Home page section of website, with carousels, the image row,
+// the owner's personal statement, and reviews
 function Home(props) {
     return (
         <div>
+
             <div className="row no-gutters">
 
                 <div className="col">
@@ -272,16 +292,23 @@ function Home(props) {
                 <br />
                 - Monty Rivers, Google Reviews
             </div>
+
+            {// Adds space to the bottom of the page to add padding to text on phones
+            }
             <div className="py-4"></div>
+
         </div>
     );
 }
 
+// Takes: nothing
+// Returns: Main website container
 class MikeMcBrideMasonry extends React.Component {
     constructor(props) {
         super(props);
+        // Used to adjust width
         this.container = React.createRef();
-        this.header = React.createRef();
+        // Used to update title
         this.state = {
             updated: false,
         }
@@ -291,19 +318,25 @@ class MikeMcBrideMasonry extends React.Component {
         return window.location.href.substring(window.location.href.length - 8, window.location.href.length) === "/gallery";
     }
 
+    // Adjusts the width of container according to screen size
+    // Necessary to scale up images in gallery properly
     forceMaxWidth() {
-        if (this.container.current.offsetWidth > 576) {
-            this.container.current.style.width = "1140px";
+        if (this.container.current.offsetWidth <= 576) {
+            this.container.current.style.width = "100%";
         }
         else {
-            this.container.current.style.width = "100%";
+            this.container.current.style.width = "1140px";
         }
     }
 
     componentDidMount() {
+        // Start carousels manually
         $(".carousel").carousel();
+
+        // Set container width
         this.forceMaxWidth();
 
+        // Update title if started on gallery
         if (this.isGallery()) {
             this.setTitle("Mike McBride Masonry | Gallery");
         }
@@ -311,9 +344,11 @@ class MikeMcBrideMasonry extends React.Component {
     }
 
     componentDidUpdate() {
+        // Restart carousels after routing (client-side)
         $(".carousel").carousel();
     }
 
+    // Update title
     setTitle(title) {
         document.title = title;
         this.setState({
@@ -322,6 +357,7 @@ class MikeMcBrideMasonry extends React.Component {
     }
 
     render() {
+        // Adjust container width on window resize
         window.addEventListener("resize", () => {
             this.forceMaxWidth();
         });
@@ -332,32 +368,36 @@ class MikeMcBrideMasonry extends React.Component {
 
                     <EdgeImage left={true} />
 
-                    <div className="col-auto ">
+                    <div className="col-auto">
+
                         <div ref={this.container} className="container bg-dark content"
                             style={{
                                 minHeight: "100vh",
                             }}>
 
-                            <Header className="bg-dark"
-                                header={this.header}
-                                update={(title) => this.setTitle(title) }/>
+                            <Header update={(title) => this.setTitle(title) }/>
 
                             <Switch style={{
                                 width: "100%",
                                 maxHeight: "100%"
                             }}>
+
                                 <Route path="/gallery"
-                                    className="bg-dark"
                                     style={{
 
                                     }}>
                                     <Carousel hasButtons={true}
                                         initial={0} />
+
+                                    {// Adds space to the bottom of the page
+                                    }
+                                    <div className="py-2"></div>
                                 </Route>
-                                <Route path="/"
-                                    className="bg-dark">
+
+                                <Route path="/">
                                     <Home />
                                 </Route>
+
                             </Switch>
 
                         </div>
@@ -378,7 +418,3 @@ ReactDOM.render(
     <MikeMcBrideMasonry id="mmm" />,
     document.getElementById('root')
 );
-
-
-//const container = document.querySelector('#mmm');
-//ReactDOM.render(<MikeMcBrideMasonry />, container);
